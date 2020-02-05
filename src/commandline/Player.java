@@ -3,24 +3,31 @@ package commandline;
 import java.util.ArrayList;
 
 public class Player {
-	private Deck deck;
-	private boolean isHuman;
-	private Card currentCard;
+	private ArrayList<Card> eachPlayersCards;
 	private boolean isActive;
 	
 	
-	public Player(boolean isHuman, Deck deck) {
-		this.isHuman = isHuman;
-		this.deck = deck;
-		
+	private boolean isWinner; // For Albert
+	private Card currentCard; // For Albert
+
+	public Card getCurrentCard() {
+		return currentCard;
 	}
 
-	public Deck getDeck() {
-		return deck;
+	public void setCurrentCard(Card currentCard) {
+		this.currentCard = currentCard;
 	}
 
-	public void setDeck(Deck deck) {
-		this.deck = deck;
+	public boolean isWinner() {
+		return isWinner;
+	}
+
+	public void setWinner(boolean isWinner) {
+		this.isWinner = isWinner;
+	}
+
+	public Player() {
+		eachPlayersCards = new ArrayList<Card>();
 	}
 
 	public boolean isActive() {
@@ -31,6 +38,16 @@ public class Player {
 		this.isActive = isActive;
 	}
 
-	
+	public void addEachPlayersCards(Card card) {
+		eachPlayersCards.add(card);
+	}
+
+	public ArrayList<Card> getDeck() {
+		return eachPlayersCards;
+	}
+
+	public String toString() {
+		return this.getDeck().get(0) + "";
+	}
 
 }

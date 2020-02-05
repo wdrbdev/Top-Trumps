@@ -1,26 +1,27 @@
 package commandline;
 
+import java.util.ArrayList;
+
 public class Card {
 	private String name;
-	private int[] categories;
+	ArrayList<Integer> theCardAttributeNumericalValues;
 	
-	
-	public Card(String name, int[] categories) {
+	ArrayList<String> categories; // For Albert
+
+	public Card(String name, ArrayList<Integer> theCardAttributeNumericalValues, ArrayList<String> categories) {
 		this.name = name;
 		this.categories = categories;
-
+		this.theCardAttributeNumericalValues =  theCardAttributeNumericalValues;
+		
 	}
-	
-	public int[] getCategories() {
-		return categories;
+
+	public ArrayList<Integer> getValues() {
+		return theCardAttributeNumericalValues;
 	}
 
 	public String getName() {
 		return name;
 	}
 	
-	public void print() {
-		System.out.println(name + ":" + categories[0]+ categories[1]+ categories[2]+ categories[3]+ categories[4]);
-	}
-
+	
 }

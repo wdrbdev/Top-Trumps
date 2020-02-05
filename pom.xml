@@ -20,7 +20,6 @@
     <dependency>
         <groupId>io.dropwizard</groupId>
         <artifactId>dropwizard-core</artifactId>
-        <version>${dropwizard.version}</version>
     </dependency>
     
     <!-- When hosting a website with dropwizard, we need to specify a language for writing views,
@@ -191,4 +190,13 @@
         </plugin>
     </plugins>
   </build>
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>io.dropwizard</groupId>
+  			<artifactId>dropwizard-core</artifactId>
+  			<version>${dropwizard.version}</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>

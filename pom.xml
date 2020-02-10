@@ -38,6 +38,19 @@
     	<artifactId>mysql-connector-java</artifactId>
     	<version>5.1.38</version>
 	</dependency>
+	
+	<!-- Converting Java object to JSON -->
+	<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20180130</version>
+</dependency>
+	<!-- Import AssetsBundle -->
+<dependency>
+    <groupId>io.dropwizard</groupId>
+    <artifactId>dropwizard-assets</artifactId>
+    <version>1.2.2</version>
+</dependency>
     
   </dependencies>
   

@@ -9,13 +9,14 @@ import controllers.Controller;
 
 public class TestLog {
 	public Game game;
+	private static final Logger logger = Logger.getLogger( TestLog.class.getName() );
 	
 	
 	   
 	    
 	
 	
-	Logger logger = Logger.getLogger("MyLog");  
+	// Logger logger = Logger.getLogger("toptrumps.log");  
     FileHandler fileHandler;  
 	public TestLog(Game game) {
 		
@@ -24,7 +25,7 @@ public class TestLog {
 		    try {  
 
 		        // This block configure the logger with handler and formatter  
-		        fileHandler = new FileHandler("toptrumps.log");  
+		        fileHandler = new FileHandler("TestLog.log");  
 		        logger.addHandler(fileHandler);
 		        SimpleFormatter formatter = new SimpleFormatter();  
 		        fileHandler.setFormatter(formatter);  

@@ -2,6 +2,7 @@ package commandline;
 
 import controllers.Controller;
 import models.Game;
+import models.Stats;
 import views.View;
 
 /**
@@ -30,6 +31,7 @@ public class TopTrumpsCLIApplication {
 		Controller controller = new Controller(game);
 		View view = new View(game, controller);
 		controller.addView(view);
+		game.activateTestLog(writeGameLogsToFile);
 
 		// Loop until the user wants to exit the game
 		while (!userWantsToQuit) {
@@ -60,6 +62,10 @@ public class TopTrumpsCLIApplication {
 					game.chooseByAi();
 				}
 
+				if (writeGameLogsToFile) {
+					game.tLog.writeChosenCategoryValues();
+				}
+
 				game.whoWon();
 
 				if (game.getNTieCards() > 0) {
@@ -69,11 +75,20 @@ public class TopTrumpsCLIApplication {
 				}
 
 				game.endTurn();
+				if (writeGameLogsToFile) {
+					game.tLog.writeAllDecks();
+				}
 
 				view.click2Continue();
 
 			}
-			game.updateStats();
+
+			if (writeGameLogsToFile) {
+				game.tLog.writeWinner();
+			}
+
+			// Update the game statistics and export to DB
+			Stats.export2DB(game);
 			view.printGameStats();
 
 			// userWantsToQuit = true; // use this when the user wants to exit the game

@@ -165,7 +165,9 @@ function updateTurnStatus() {
       "<br />" + "The winning card is " + winningCard.cardName + ".";
   }
   // Add message to board
-  $("#gamestatus").html(gameStatus);
+  if (game.isGameOver !== true) {
+    $("#gamestatus").html(gameStatus);
+  }
 }
 
 function updateTurnId() {
@@ -384,4 +386,3 @@ function updateNCards() {
     }
   });
 }
-

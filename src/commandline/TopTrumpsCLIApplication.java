@@ -30,7 +30,6 @@ public class TopTrumpsCLIApplication {
 		Controller controller = new Controller(game);
 		View view = new View(game, controller);
 		controller.addView(view);
-		game.activateTestLog(writeGameLogsToFile);
 
 		// Loop until the user wants to exit the game
 		while (!userWantsToQuit) {
@@ -60,12 +59,8 @@ public class TopTrumpsCLIApplication {
 				} else {
 					game.chooseByAi();
 				}
-				
-				game.tLog.writeChosenCategoryValues();
 
 				game.whoWon();
-				
-				
 
 				if (game.getNTieCards() > 0) {
 					view.printTieCards();
@@ -78,8 +73,6 @@ public class TopTrumpsCLIApplication {
 				view.click2Continue();
 
 			}
-			
-			game.tLog.writeWinner();
 			game.updateStats();
 			view.printGameStats();
 

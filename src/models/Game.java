@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
+import controllers.Controller;
+
 /**
  * The game class contains the rules and procedure of the game. The game class
  * is composed of Player, Card, and Stats. This is the core Model of the MVC
@@ -15,6 +17,7 @@ import java.util.Scanner;
  */
 public class Game {
   public boolean isGameOver = false;
+  public TestLog tLog;
   /**
    * # of players in the game. i.e. the size of players array (players.size())
    */
@@ -75,6 +78,8 @@ public class Game {
    * Record how many turns each player win. The index is the id of the players.
    */
   public int[] winningRecord;
+  
+  public boolean isTestLog;
 
   /**
    * Create player objects and put it in game.players according to input nPlayers.
@@ -82,6 +87,9 @@ public class Game {
    * 
    * @param nPlayers an int, the # of players
    */
+  
+  
+  
   public void initPlayer(int nPlayers) {
     this.nPlayers = nPlayers;
     boolean isFirstPlayer = false;
@@ -154,25 +162,36 @@ public class Game {
       card = new Card(token[0], categories, values);
       this.communalDeck.add(card);
     }
+    
+    if (isTestLog) {
+        tLog.writeCommunalDeck();
+        }
 
-    // Shuffle the common pule before distributing cards to deck
+    // Shuffle the common pile before distributing cards to deck
     Collections.shuffle(this.communalDeck);
+    
+    if (isTestLog) {
+        tLog.writeCommunalDeck();
+        }
+    
   }
 
   /**
    * Deal cards to all players from common pile. If # of cards in common pile
    * cannot be evenly deal to players, some player will get more cards than
    * others. e.g. if # of players is 3 and there are 40 cards in the common pile,
-   * the cards for each players are 13, 13, 14.
+   * the cards for each players are 13, 13, 13.
    */
   public void distributeCards() {
-    int nCards = this.communalDeck.size();
-    for (int i = 0; i < nCards; i++) {
-      int playerIndex = i % this.players.size();
-      this.players.get(playerIndex).addCard(this.communalDeck.pop());
-    }
-    this.updateNCards();
-  }
+	    int nCards = this.communalDeck.size();
+	    int nExtraCards = this.communalDeck.size() % this.nPlayers;
+	    for (int i = 0; i < nCards - nExtraCards; i++) {
+	      int playerIndex = i % this.players.size();
+	      this.players.get(playerIndex).addCard(this.communalDeck.pop());
+	    }
+	    this.communalDeck.clear();
+	    this.updateNCards();
+	  }
 
   /**
    * Decide who win the turn according to the rule of top trump.
@@ -191,6 +210,12 @@ public class Game {
    * </ol>
    */
   public void whoWon() {
+	  
+	  if (isTestLog) {
+	        tLog.writeInPlayCards();
+	        }
+	  
+	  
     int nWinner = 0;
     int maxValue = Integer.MIN_VALUE;
     // Clear the tie cards
@@ -252,12 +277,15 @@ public class Game {
       // Transfer card to winner and when isTie=true, transfer cards in common pile to
       // winner as well.
       this.win(this.isTie);
+    
       // Update isTie when there's a winner in this turn after card transaction
       this.isTie = false;
     }
     // Remove the currentCard nd update nCards of each player
     this.removeCurrentCard();
     this.updateNCards();
+    
+    
   }
 
   /**
@@ -285,6 +313,12 @@ public class Game {
       winner.addCard(this.communalDeck);
       // Remember to clear the common pile!
       this.communalDeck.clear();
+      
+    }
+    
+    
+    if (isTestLog) {
+    tLog.writeCommunalDeck();
     }
   }
 
@@ -299,6 +333,9 @@ public class Game {
       if (!player.isOut() || player.currentCard != null) {
         this.communalDeck.add(player.currentCard);
       }
+    }
+    if (isTestLog ) {
+    tLog.writeCommunalDeck();
     }
   }
 
@@ -358,6 +395,12 @@ public class Game {
 
     // Deal cards from common pile to players
     this.distributeCards();
+    
+    if (isTestLog) {
+    	tLog.writeAllDecks();
+        }
+    
+    
     // Draw one card as currentCard from players' deck
     this.draw();
     // Initialize current wining card and current winner for the first player
@@ -592,5 +635,16 @@ public class Game {
       System.out.println(game.players.get(i).isHuman);
     }
   }
+  
+  public void activateTestLog(boolean isTestLog) {
+	  this.isTestLog = isTestLog;
+	  if (isTestLog) {
+	  this.tLog = new TestLog(this);
+	  }
+	  
+  }
+  
+ 
+  
 
 }

@@ -54,7 +54,7 @@ public class View {
 
   public void printDrawnCard() {
     Card winingCard = this.game.getHumanCard();
-    System.out.println("The winning card is \'" + winingCard.cardName + "\':");
+    System.out.println("You have drawn \'" + winingCard.cardName + "\':");
     for (String category : winingCard.categories) {
       System.out.println("> " + category + ": " + winingCard.getValue(category));
     }
@@ -144,5 +144,14 @@ public class View {
       }
     }
   }
+  
+ 
+  
+  
+	  
+
+  
+ 
+   
 
 }

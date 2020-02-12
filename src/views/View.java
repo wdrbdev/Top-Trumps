@@ -8,6 +8,7 @@ import controllers.Controller;
 import models.Card;
 import models.Game;
 import models.Player;
+import models.Stats;
 
 public class View {
   public Game game;
@@ -19,7 +20,13 @@ public class View {
   }
 
   public void printHistoryStats() {
-    System.out.println("TODO: Stats will be shown here");
+    this.game.stats = new Stats();
+    System.out.println("Total Number of Games So Far = " + Integer.toString(this.game.stats.sumNGame));
+    System.out.println("Total Number of Games Human Won = " + Integer.toString(this.game.stats.sumNHumanWon));
+    System.out.println("Total Number of Games Computer Won = " + Integer.toString(this.game.stats.sumNAiWon));
+    System.out.println("Average Draw Round = " + Integer.toString((this.game.stats.avgTie)));
+    System.out.println(
+        "Maximum Number of Rounds (Longest Game) in a Game = " + Integer.toString(this.game.stats.nLongestTurn));
   }
 
   public void printGameStats() {
@@ -43,7 +50,9 @@ public class View {
   }
 
   public void printNCards() {
-    System.out.println("There are " + this.game.getHumanPlayer().nCards + " cards in your deck");
+    if (this.game.getHumanPlayer() != null) {
+      System.out.println("There are " + this.game.getHumanPlayer().nCards + " cards in your deck");
+    }
   }
 
   public void printRound() {
@@ -144,14 +153,5 @@ public class View {
       }
     }
   }
-  
- 
-  
-  
-	  
-
-  
- 
-   
 
 }

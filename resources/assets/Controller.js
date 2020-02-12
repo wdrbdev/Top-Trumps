@@ -165,9 +165,7 @@ function updateTurnStatus() {
       "<br />" + "The winning card is " + winningCard.cardName + ".";
   }
   // Add message to board
-  if (game.isGameOver !== true) {
-    $("#gamestatus").html(gameStatus);
-  }
+  $("#gamestatus").html(gameStatus);
 }
 
 function updateTurnId() {
@@ -225,7 +223,7 @@ function getGameStatistics() {
 
   // Add button to go to game history statistics page (/toptrumps/stats)
   $("#boardbottompanel").append(
-    `<button id="gotohistory" type="button" onclick="location.href='/toptrumps'" class="btn btn-primary col-6" style="margin: 0px 3px;font-size: 16px;">Go back to Homepage</button>`
+    `<button id="gotohistory" type="button" onclick="location.href='/toptrumps'" class="btn btn-primary col-6" style="margin: 0px 3px;font-size: 16px;">Go back to homepage</button>`
   );
 
   // Adjust layout for game statistics board
@@ -386,3 +384,4 @@ function updateNCards() {
     }
   });
 }
+

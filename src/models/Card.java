@@ -68,16 +68,16 @@ public class Card {
 
     ps.println(jsonCard.toString());
   }
-  
-  public String toString() {
-	  JSONObject jsonCard = new JSONObject();
 
-	    jsonCard.put("cardName", this.cardName);
-	    for (Map.Entry<String, Integer> entry : this.categoryValues.entrySet()) {
-	      jsonCard.put(entry.getKey(), entry.getValue());
-	    }
-	  return jsonCard.toString();
-	  
+  public String toString() {
+    JSONObject jsonCard = new JSONObject();
+
+    jsonCard.put("cardName", this.cardName);
+    for (Map.Entry<String, Integer> entry : this.categoryValues.entrySet()) {
+      jsonCard.put(entry.getKey(), entry.getValue());
+    }
+    return jsonCard.toString();
+
   }
 
 }

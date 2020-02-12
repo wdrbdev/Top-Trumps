@@ -8,8 +8,6 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
-import controllers.Controller;
-
 /**
  * The game class contains the rules and procedure of the game. The game class
  * is composed of Player, Card, and Stats. This is the core Model of the MVC
@@ -17,6 +15,13 @@ import controllers.Controller;
  */
 public class Game {
   public boolean isGameOver = false;
+  /**
+   * If user pass -t flag for command line, isTestLog vwill be set to true.
+   */
+  public boolean isTestLog = false;
+  /**
+   * Test Log object would be created only if -t flag presented.
+   */
   public TestLog tLog;
   /**
    * # of players in the game. i.e. the size of players array (players.size())
@@ -78,8 +83,6 @@ public class Game {
    * Record how many turns each player win. The index is the id of the players.
    */
   public int[] winningRecord;
-  
-  public boolean isTestLog;
 
   /**
    * Create player objects and put it in game.players according to input nPlayers.
@@ -87,9 +90,7 @@ public class Game {
    * 
    * @param nPlayers an int, the # of players
    */
-  
-  
-  
+
   public void initPlayer(int nPlayers) {
     this.nPlayers = nPlayers;
     boolean isFirstPlayer = false;
@@ -129,7 +130,6 @@ public class Game {
     // project.
     try {
       cardFileReader = new FileReader("StarCitizenDeck.txt");
-
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -162,18 +162,18 @@ public class Game {
       card = new Card(token[0], categories, values);
       this.communalDeck.add(card);
     }
-    
+
     if (isTestLog) {
-        tLog.writeCommunalDeck();
-        }
+      tLog.writeCommunalDeck();
+    }
 
     // Shuffle the common pile before distributing cards to deck
     Collections.shuffle(this.communalDeck);
-    
+
     if (isTestLog) {
-        tLog.writeCommunalDeck();
-        }
-    
+      tLog.writeCommunalDeck();
+    }
+
   }
 
   /**
@@ -183,15 +183,15 @@ public class Game {
    * the cards for each players are 13, 13, 13.
    */
   public void distributeCards() {
-	    int nCards = this.communalDeck.size();
-	    int nExtraCards = this.communalDeck.size() % this.nPlayers;
-	    for (int i = 0; i < nCards - nExtraCards; i++) {
-	      int playerIndex = i % this.players.size();
-	      this.players.get(playerIndex).addCard(this.communalDeck.pop());
-	    }
-	    this.communalDeck.clear();
-	    this.updateNCards();
-	  }
+    int nCards = this.communalDeck.size();
+    int nExtraCards = this.communalDeck.size() % this.nPlayers;
+    for (int i = 0; i < nCards - nExtraCards; i++) {
+      int playerIndex = i % this.players.size();
+      this.players.get(playerIndex).addCard(this.communalDeck.pop());
+    }
+    this.communalDeck.clear();
+    this.updateNCards();
+  }
 
   /**
    * Decide who win the turn according to the rule of top trump.
@@ -210,12 +210,11 @@ public class Game {
    * </ol>
    */
   public void whoWon() {
-	  
-	  if (isTestLog) {
-	        tLog.writeInPlayCards();
-	        }
-	  
-	  
+
+    if (isTestLog) {
+      tLog.writeInPlayCards();
+    }
+
     int nWinner = 0;
     int maxValue = Integer.MIN_VALUE;
     // Clear the tie cards
@@ -277,15 +276,14 @@ public class Game {
       // Transfer card to winner and when isTie=true, transfer cards in common pile to
       // winner as well.
       this.win(this.isTie);
-    
+
       // Update isTie when there's a winner in this turn after card transaction
       this.isTie = false;
     }
     // Remove the currentCard nd update nCards of each player
     this.removeCurrentCard();
     this.updateNCards();
-    
-    
+
   }
 
   /**
@@ -313,12 +311,11 @@ public class Game {
       winner.addCard(this.communalDeck);
       // Remember to clear the common pile!
       this.communalDeck.clear();
-      
+
     }
-    
-    
+
     if (isTestLog) {
-    tLog.writeCommunalDeck();
+      tLog.writeCommunalDeck();
     }
   }
 
@@ -334,17 +331,9 @@ public class Game {
         this.communalDeck.add(player.currentCard);
       }
     }
-    if (isTestLog ) {
-    tLog.writeCommunalDeck();
+    if (isTestLog) {
+      tLog.writeCommunalDeck();
     }
-  }
-
-  /**
-   * Update the game statistics and export to DB
-   */
-  public void updateStats() {
-    this.stats = new Stats(this.nPlayers, this.nTie, this.turnId, this.winningRecord);
-    this.stats.export2DB();
   }
 
   /**
@@ -354,7 +343,7 @@ public class Game {
    * @return a Stats object
    */
   public static Stats game2Stats(Game game) {
-    Stats stats = new Stats(game.nPlayers, game.nTie, game.turnId, game.winningRecord);
+    Stats stats = new Stats(game.nPlayers, game.nTie, game.turnId, game.currentWinner.isHuman);
     return stats;
   }
 
@@ -395,12 +384,11 @@ public class Game {
 
     // Deal cards from common pile to players
     this.distributeCards();
-    
+
     if (isTestLog) {
-    	tLog.writeAllDecks();
-        }
-    
-    
+      tLog.writeAllDecks();
+    }
+
     // Draw one card as currentCard from players' deck
     this.draw();
     // Initialize current wining card and current winner for the first player
@@ -413,12 +401,11 @@ public class Game {
   public void endTurn() {
     // Check if the game is over
     this.checkIsGameOver();
-    // Update game statistics
-    this.updateStats();
-    // TODO start next turn or show statistics
 
     // Start next turn
-    this.turnId++;
+    if (!this.isGameOver) {
+      this.turnId++;
+    }
     // All players draw one card from their deck
     this.draw();
   }
@@ -499,9 +486,10 @@ public class Game {
 
   /**
    * Getter for # of tie cards
+   * 
    * @return an int
    */
-  public int getNTieCards(){
+  public int getNTieCards() {
     return this.tieCards.size();
   }
 
@@ -621,30 +609,17 @@ public class Game {
     this.chosenCategory = this.currentWinner.chooseRandomCategory();
   }
 
-  public static void main(String[] args) {
-    // Test game.importCard();
-    Game game = new Game();
-    game.importCard();
-    for (Card card : game.communalDeck) {
-      card.print(System.err);
-    }
-
-    // Test players
-    game.initPlayer(5);
-    for (int i = 0; i < 5; i++) {
-      System.out.println(game.players.get(i).isHuman);
-    }
-  }
-  
+  /**
+   * Start recording the test status to log file. isTestLog will be set to true
+   * when -t flag present.
+   * 
+   * @param isTestLog
+   */
   public void activateTestLog(boolean isTestLog) {
-	  this.isTestLog = isTestLog;
-	  if (isTestLog) {
-	  this.tLog = new TestLog(this);
-	  }
-	  
+    this.isTestLog = isTestLog;
+    if (isTestLog) {
+      this.tLog = new TestLog(this);
+    }
   }
-  
- 
-  
 
 }

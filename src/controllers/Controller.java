@@ -96,14 +96,13 @@ public class Controller {
 
   public static JSONObject historyStatistics2Json(Game game) {
     JSONObject jsonHistoryStatistics = new JSONObject();
-    Stats stats = new Stats();
+    game.stats = new Stats();
 
-    jsonHistoryStatistics.put("sumNGame", stats.sumNGame);
-    jsonHistoryStatistics.put("sumNRound", stats.sumNRound);
-    jsonHistoryStatistics.put("sumNTie", stats.sumNTie);
-    jsonHistoryStatistics.put("sumNHumanWon", stats.sumNHumanWon);
-    jsonHistoryStatistics.put("sumAiWon", stats.sumNAiWon);
-    jsonHistoryStatistics.put("nLongestGame", stats.nLongestGame);
+    jsonHistoryStatistics.put("sumNGame", game.stats.sumNGame);
+    jsonHistoryStatistics.put("sumNTie", game.stats.avgTie);
+    jsonHistoryStatistics.put("sumNHumanWon", game.stats.sumNHumanWon);
+    jsonHistoryStatistics.put("sumAiWon", game.stats.sumNAiWon);
+    jsonHistoryStatistics.put("nLongestGame", game.stats.nLongestTurn);
 
     return jsonHistoryStatistics;
   }
@@ -112,12 +111,15 @@ public class Controller {
     Stats stats = Game.game2Stats(game);
 
     JSONObject jsonGameStatistics = new JSONObject();
-    jsonGameStatistics.put("nRounds", stats.nRounds);
+    jsonGameStatistics.put("nRounds", stats.nTurns);
     jsonGameStatistics.put("nTie", stats.nTie);
 
     JSONArray jsonArray = new JSONArray();
-    for (int i : stats.winningRecord) {
-      jsonArray.put(i);
+
+    if(game.winningRecord!=null){
+      for (int i : game.winningRecord) {
+        jsonArray.put(i);
+      }
     }
     jsonGameStatistics.put("winningRecord", jsonArray);
 
@@ -208,7 +210,6 @@ public class Controller {
       this.view.printHistoryStats();
       return false;
     case 2:
-      System.out.println("dd");
       return true;
     case 3:
       this.userWantsToQuit = true;

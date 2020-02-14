@@ -110,9 +110,15 @@ public class Game {
       if (i == 0) {
         Player humanPlayer = new Player(i, true, isFirstPlayer);
         this.players.add(i, humanPlayer);
-        this.currentWinner = humanPlayer;
       } else {
         this.players.add(i, new Player(i, false, isFirstPlayer));
+      }
+
+      // Assign active player as currentWinner
+      for (Player player : this.players) {
+        if (player.isWinner) {
+          this.currentWinner = player;
+        }
       }
     }
 
@@ -379,8 +385,6 @@ public class Game {
     this.initPlayer(nPlayers);
     // Import card data from txt to common pile
     this.importCard();
-    // Import history game statistics
-    // TODO update stats
 
     // Deal cards from common pile to players
     this.distributeCards();
@@ -440,12 +444,12 @@ public class Game {
    * Update nCards for all players
    */
   public void updateNCards() {
-    System.out.println("===ncard===");
+    // System.out.println("===ncard===");
     for (Player player : this.players) {
       player.nCards = player.deck.size();
-      System.out.println(player.nCards);
+      // System.out.println(player.nCards);
     }
-    System.out.println("===ncard===");
+    // System.out.println("===ncard===");
   }
 
   /**

@@ -54,7 +54,7 @@
                   <div id="NumberOfDraws" class="float-right"></div>
                 </li>
                 <li class="list-group-item" style="padding: 3px 20px;">
-                  <div class="float-left">The Largest number of rounds played in a single gmae</div>
+                  <div class="float-left">The largest number of rounds played in a single game</div>
                   <div id="LongestGame" class="float-right"></div>
                 </li>
               </ul>

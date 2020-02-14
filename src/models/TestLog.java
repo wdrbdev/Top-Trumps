@@ -7,31 +7,44 @@ import java.util.logging.SimpleFormatter;
 
 public class TestLog {
 	public Game game;
-	private static final Logger logger = Logger.getLogger(TestLog.class.getName());
+	private Logger logger = Logger.getLogger(TestLog.class.getName());
 
-	// Logger logger = Logger.getLogger("toptrumps.log");
-	FileHandler fileHandler;
+	private static FileHandler fileHandler;
 
 	public TestLog(Game game) {
 		this.game = game;
 
-		try {
+		
 
 			// This block configure the logger with handler and formatter
-			fileHandler = new FileHandler("TestLog.log");
-			logger.addHandler(fileHandler);
-			SimpleFormatter formatter = new SimpleFormatter();
-			fileHandler.setFormatter(formatter);
-
+			
+			addHandler();
 			// the following statement is used to log any messages
 			logger.info("New log");
+			
 
+
+	}
+	
+	public void addHandler() {
+		try {
+			fileHandler = new FileHandler("TLog");
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		logger.addHandler(fileHandler);
+		SimpleFormatter formatter = new SimpleFormatter();
+		fileHandler.setFormatter(formatter);
+		
+	}
+	
+	public void closeHandler() {
+		    fileHandler.close();   //must call fileHandler.close or a .LCK file will remain
+		
 	}
 
-	public void writeAllDecks() { // TODO rewrite so account for players booted
+	public void writeAllDecks() { // Write all the decks to the log
 		String deck = "\nALL DECKS \n";
 
 		for (Player player : this.game.players) {
@@ -51,7 +64,7 @@ public class TestLog {
 		logger.info(deck);
 	}
 
-	public void writeCommunalDeck() {
+	public void writeCommunalDeck() { // Write the communal deck to the log
 		String deck = "\nCOMMUNAL DECK \n";
 		if (this.game.communalDeck.size() == 0) {
 			deck = "The communal deck is empty";
@@ -63,7 +76,7 @@ public class TestLog {
 		logger.info(deck);
 	}
 
-	public void writeInPlayCards() {
+	public void writeInPlayCards() { // Write the current cards in play to the log
 		String deck = "\nCARDS IN PLAY \n";
 		for (Player player : this.game.players) {
 			// Exclude players who lose
@@ -74,7 +87,7 @@ public class TestLog {
 		logger.info(deck);
 	}
 
-	public void writeChosenCategoryValues() {
+	public void writeChosenCategoryValues() { // Write the chosen category and the corresponding values to the log
 
 		String category = "\nCHOSEN CATEGORY VALUES \n";
 		for (Player player : this.game.players) {
@@ -90,26 +103,16 @@ public class TestLog {
 		logger.info(category);
 	}
 
-	public void writeWinner() {
+	public void writeWinner() { // Write the winner to the log
 
 		String winner = "\nWINNER\n";
 		winner += "Player " + game.getWinner().id + " wins!";
 		logger.info(winner);
+		closeHandler();
+		
 
 	}
+	
+	
 
 }
-
-// � The contents of the complete deck once it has been read in and constructed
-// � The contents of the complete deck after it has been shuffled
-// � The contents of the user�s deck and the computer�s deck(s) once they have
-// been allocated. Be sure to
-// indicate which the user�s deck is and which the computer�s deck(s) is.
-// � The contents of the communal pile when cards are added or removed from it
-// � The contents of the current cards in play (the cards from the top of the
-// user�s deck and the computer�s
-// deck(s))
-// � The category selected and corresponding values when a user or computer
-// selects a category
-// � The contents of each deck after a round
-// � The winner of the game

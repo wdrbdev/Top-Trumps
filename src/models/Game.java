@@ -256,7 +256,7 @@ public class Game {
           if (player.currentCard.getValue(this.chosenCategory) == maxValue) {
             // Update currentWinner and winning card
             // DO NOT update isWinner
-            this.currentWinner = player;
+            // this.currentWinner = player;
             this.winningCard = player.currentCard;
             this.tieCards.add(player.currentCard);
           }

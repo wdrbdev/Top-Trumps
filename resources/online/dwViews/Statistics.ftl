@@ -34,27 +34,27 @@
           <div class="row justify-content-center">
             <div class="card col-6" style="margin: 6px">
               <div class="card-body">
-                <h2 class="card-title">Game Statistics</h2>
+                <h2 class="card-title">History Game Statistics</h2>
               </div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item" style="padding: 3px 20px;">
-                  <div class="float-left">Number of Games</div>
+                  <div class="float-left">Number of games played overall</div>
                   <div id="NumberOfGames" class="float-right"></div>
                 </li>
                 <li class="list-group-item" style="padding: 3px 20px;">
-                  <div class="float-left">Number of Human Wins</div>
+                  <div class="float-left">How many times the human has won</div>
                   <div id="NumberOfHumanWins" class="float-right"></div>
                 </li>
                 <li class="list-group-item" style="padding: 3px 20px;">
-                  <div class="float-left">Number of AI Wins</div>
+                  <div class="float-left">How many times the computer has won</div>
                   <div id="NumberOfAIWins" class="float-right"></div>
                 </li>
                 <li class="list-group-item" style="padding: 3px 20px;">
-                  <div class="float-left">Number of Draws</div>
+                  <div class="float-left">The average number of draws</div>
                   <div id="NumberOfDraws" class="float-right"></div>
                 </li>
                 <li class="list-group-item" style="padding: 3px 20px;">
-                  <div class="float-left">Longest Game</div>
+                  <div class="float-left">The Largest number of rounds played in a single gmae</div>
                   <div id="LongestGame" class="float-right"></div>
                 </li>
               </ul>
@@ -112,7 +112,7 @@
       $.get("/toptrumps/newgame");
       $.get("http://localhost:7777/toptrumps/setnplayers?nPlayers=5");
       $(document).ready(function() { const historyStatistics =
-      getGame().historyStatistics; console.log(historyStatistics);
+      getHistoryStats(); console.log(historyStatistics);
       $("#NumberOfGames").text(historyStatistics.sumNGame);
       $("#NumberOfHumanWins").text(historyStatistics.sumNHumanWon);
       $("#NumberOfAIWins").text(historyStatistics.sumAiWon);

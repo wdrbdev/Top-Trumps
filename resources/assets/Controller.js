@@ -1,5 +1,6 @@
 "use strict";
 
+// Get the json of Game object in java side model
 function getGame() {
   let game;
   $.ajax({
@@ -281,8 +282,6 @@ function showWinningCard() {
     });
 }
 
-function startGame() {}
-
 function appendBtnMid() {
   $("#btn-panel").empty();
   let btn = `<button id="continue" type="button" onClick="turnMid(event)" class="btn btn-primary col-8" style="margin: 0px 3px;font-size: 16px;">Continue</button>`;
@@ -385,3 +384,16 @@ function updateNCards() {
   });
 }
 
+function getHistoryStats() {
+  let historyStats;
+  $.ajax({
+    url: "/toptrumps/gethistorystats",
+    type: "get",
+    data: {},
+    async: false,
+    success: function(data) {
+      historyStats = data;
+    }
+  });
+  return historyStats;
+}

@@ -15,15 +15,12 @@ function getGame() {
   return game;
 }
 
-function isGameOver() {
-  let data = getGame();
-  console.log(data);
-}
-
+// When the end of the turn, call game.endTurn()
 function endTurn() {
   $.get("/toptrumps/endturn");
 }
 
+// Add all the cards, including human card and AI cards
 function getAllCards() {
   $("#AiCards").empty();
   const game = getGame();
@@ -32,6 +29,7 @@ function getAllCards() {
   const cardTemplate = `<div id="card" class="card" style="margin: 4px 2px;-ms-flex: 0 0 30%; flex: 0 0 30%; max-width: 30%;"> <div id="card-header" class="container" style="margin:5px 0;"><h5 id="playerName" class="d-inline-block float-left">Player </h5><h5 class="d-inline-block" style="margin: 0 5px"><span id="nCards" class="badge badge-primary float-right">nCards</span></h5></div><div class="card-body align-top" style="padding: 3px"><img class="card-img-top container" src="https://placedog.net/480/360" alt="card image" width="160" height="90" /> <h5 id="emptycardtitle" class="card-title container"></h5></div><ul id="emptycardul" class="list-group list-group-flush align-bottom"></ul></div>`;
   const cardLi = `<li id="emptyli" class="list-group-item" style="padding: 3px 20px;"  > <div id="emptycategory" class="float-left">level</div> <div id="emptyvalue" class="float-right">8</div> </li>`;
 
+  // Call insertCurrentCard() to add card.
   for (let i = 0; i < game.players.length; i++) {
     if (
       game.players[i].isOut !== true &&
@@ -42,6 +40,7 @@ function getAllCards() {
   }
 }
 
+// Only add AI players' cards
 function getAiCards() {
   $("#AiCards").empty();
   const game = getGame();
@@ -62,6 +61,7 @@ function getAiCards() {
   }
 }
 
+// Only add human player's card
 function getHumanCards() {
   $("#AiCards").empty();
   const game = getGame();
@@ -86,6 +86,7 @@ function getHumanCards() {
     .attr("onmouseout", "$(this).removeClass('bg-warning')");
 }
 
+// Insert players' card as bootstrap card template
 function insertCurrentCard(data, cardTemplate, cardLi, locationId, index) {
   let cardTemplateHTML = $.parseHTML(cardTemplate);
   let cardTitle = data[index].currentCard["cardName"]; //"Avenger"
@@ -130,6 +131,7 @@ function insertCurrentCard(data, cardTemplate, cardLi, locationId, index) {
   $(locationId).append(cardTemplateHTML);
 }
 
+// Show the game information, including the overall winner, the winner of the turn (or draw and # of cards in common pile), and the winning cards.
 function updateTurnStatus() {
   const game = getGame();
   let gameStatus = "";
@@ -169,6 +171,7 @@ function updateTurnStatus() {
   $("#gamestatus").html(gameStatus);
 }
 
+// Show which turn it is
 function updateTurnId() {
   const game = getGame();
   let gameStatus = "Status of Turn " + game.turnId;
@@ -176,6 +179,7 @@ function updateTurnId() {
   $("#turnid").html(gameStatus);
 }
 
+// Show the active player's name
 function showActivePlayer() {
   const game = getGame();
   let gameStatus = "";
@@ -192,6 +196,7 @@ function showActivePlayer() {
   $("#gamestatus").html(gameStatus);
 }
 
+// Show the statistics of the current game which include how many turn each player won
 function getGameStatistics() {
   $("#AiCards").empty();
   const gameStatistics = getGame().gameStatistics;
@@ -231,6 +236,7 @@ function getGameStatistics() {
   $("#AiCards").addClass("justify-content-center");
 }
 
+// Let user choose the category by click the category li tag
 function chooseCategory(event) {
   // Get the category chosen
   let category = $(event.target)
@@ -247,6 +253,7 @@ function chooseCategory(event) {
   $.get("http://localhost:7777/toptrumps/choosecategory?category=" + category);
 }
 
+// Add green frame to winning card
 function showWinningCard() {
   const winningCard = getGame().winningCard;
   const chosenCategory = getGame().chosenCategory;
@@ -282,18 +289,21 @@ function showWinningCard() {
     });
 }
 
+// Append the "continue" button
 function appendBtnMid() {
   $("#btn-panel").empty();
   let btn = `<button id="continue" type="button" onClick="turnMid(event)" class="btn btn-primary col-8" style="margin: 0px 3px;font-size: 16px;">Continue</button>`;
   $("#btn-panel").append(btn);
 }
 
+// Append the "next turn" button
 function appendBtnEnd() {
   $("#btn-panel").empty();
   let btn = `<button id="continue" type="button" onClick="turnEnd()" class="btn btn-primary col-8" style="margin: 0px 3px;font-size: 16px;">Next Turn</button>`;
   $("#btn-panel").append(btn);
 }
 
+// Append the "skip" button
 function appendBtnSkip() {
   const game = getGame();
   if (game.isHumanOut === true) {
@@ -302,6 +312,7 @@ function appendBtnSkip() {
   }
 }
 
+// The functionality of the skip button, which will automatically play the game until there's a winner
 function skip() {
   let isGameOver = getGame().isGameOver;
   while (isGameOver === false) {
@@ -313,6 +324,7 @@ function skip() {
   }
 }
 
+// Run all methods for the beginning of the turn
 function turnBeginning() {
   $("#AiCards").empty();
 
@@ -338,6 +350,7 @@ function turnBeginning() {
   }
 }
 
+// Run all methods for the middle of the turn
 function turnMid(event) {
   let game = getGame();
   if (game.currentWinner.isHuman === true) {
@@ -360,11 +373,13 @@ function turnMid(event) {
   updateTurnStatus();
 }
 
+// Run all methods for the end of the turn
 function turnEnd() {
   $.get("/toptrumps/endturn");
   turnBeginning();
 }
 
+// Show # of cards each player have
 function updateNCards() {
   const game = getGame();
   let dataPlayerId = -1;
@@ -384,6 +399,7 @@ function updateNCards() {
   });
 }
 
+// Get the game history statistics from database
 function getHistoryStats() {
   let historyStats;
   $.ajax({

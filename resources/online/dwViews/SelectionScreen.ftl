@@ -128,6 +128,7 @@
     <script type="text/javascript">
       "use strict";
 
+      // Methods called when enter the /toptrumps/
       $(document).ready(function() {
         $("#gotogamestatistics").click(function(){
           $.get("http://localhost:7777/toptrumps/setnplayers?nPlayers=5");

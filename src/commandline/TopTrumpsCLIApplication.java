@@ -45,8 +45,8 @@ public class TopTrumpsCLIApplication {
 			game.startGame(nPlayers);
 
 			// Clear the screen
-			System.out.print("\033[H\033[2J");
-			System.out.flush();
+			// System.out.print("\033[H\033[2J");
+			// System.out.flush();
 
 			// Print start screen
 			view.printStart();
@@ -57,8 +57,8 @@ public class TopTrumpsCLIApplication {
 			// The loop for each game
 			while (!game.isGameOver) {
 				// Clear the screen
-				System.out.print("\033[H\033[2J");
-				System.out.flush();
+				// System.out.print("\033[H\033[2J");
+				// System.out.flush();
 
 				view.printRound();
 				view.printActivePlayer();

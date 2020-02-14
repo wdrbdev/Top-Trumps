@@ -169,4 +169,10 @@ public class TopTrumpsRESTAPI {
 		this.game.currentWinner.currentCard.print(System.err);
 	}
 
+	@GET
+	@Path("/gethistorystats")
+	public String getHitoryStats() {
+		return Controller.historyStatistics2Json(this.game);
+	}
+
 }

@@ -20,40 +20,69 @@ public class Controller {
 
   public boolean toRestart = false;
 
+  /**
+   * Include model(Game) to initialize controller
+   * 
+   * @param game a Game object, the model in MVC pattern
+   */
   public Controller(Game game) {
     this.game = game;
   }
 
+  /**
+   * Add view into controller
+   * 
+   * @param view a View object, the view in MVC pattern
+   */
   public void addView(View view) {
     this.view = view;
   }
 
+  /**
+   * Scan input and validate it according to # of choices. The choices is valid
+   * when it's between 0(included) amd nChoices(excluded). Print "invalid input"
+   * and ask user to input again when the input is not within the range.
+   * 
+   * @param nChoices an int, # of choices shown in view
+   * @return an int, the valid input of user
+   */
   public int validateInput(int nChoices) {
+    // Use scanner for input
     Scanner scanner = new Scanner(System.in);
-    boolean isInvalidInput = true;
+    // the input value as valid integer
     int intInput = -1;
+    // infinite loop which break when the input is validated
+    boolean isInvalidInput = true;
     while (isInvalidInput) {
+      // use nextLine() rather than nextLine(nextInt) to exclude exception raised
       String stringInput = scanner.nextLine();
+      // if the input cannot be converted to int, then it's invalid
       try {
         intInput = Integer.parseInt(stringInput);
       } catch (NumberFormatException e) {
-        System.out.println("Invalid input.");
       }
+      // When input can be converted to integer & input is within acceptable range
       if (intInput > 0 && intInput <= nChoices) {
         System.out.println();
         return intInput;
       }
+      System.out.println("Invalid input. Please enter a number between 1 to " + Integer.toString(nChoices) + ".");
       System.out.print("Please enter your choice again: ");
     }
     return -1;
   }
 
-  public Game getCliGame() {
-    return this.game;
-  }
-
+  /**
+   * Convert player object to JSON object. e.g. this will be called
+   * players2JsonArray or game2Json.
+   * 
+   * @param player a Player object
+   * @return a JSON object, the player of json object format
+   */
   public static JSONObject player2Json(Player player) {
     JSONObject jsonPlayer = new JSONObject();
+
+    // Add object attribute-value as key-value pair
     jsonPlayer.put("id", player.id);
     jsonPlayer.put("nCards", player.getNCard());
     jsonPlayer.put("isWinner", player.isWinner);
@@ -68,9 +97,16 @@ public class Controller {
     return jsonPlayer;
   }
 
+  /**
+   * Convert card object to JSON object and Convert categories as JSON array.
+   * 
+   * @param card a Card object, e.g. currentCard
+   * @return a JSON object, the card of json object format
+   */
   public static JSONObject card2Json(Card card) {
     JSONObject jsonCard = new JSONObject();
 
+    // Add object attribute-value as key-value pair
     jsonCard.put("cardName", card.cardName);
     jsonCard.put("nCategories", card.categories.size());
     for (Map.Entry<String, Integer> entry : card.categoryValues.entrySet()) {
@@ -85,8 +121,16 @@ public class Controller {
     return jsonCard;
   }
 
+  /**
+   * Convert array of player object to JSON array
+   * 
+   * @param players
+   * @return a JSON array, the game.players array of json object format
+   */
   public static JSONArray players2JsonArray(ArrayList<Player> players) {
     JSONArray jsonPlayers = new JSONArray();
+
+    // Add object attribute-value as key-value pair
     // Add all players into jsonPlayers, which is a JSON array, by foreach loop
     for (Player player : players) {
       jsonPlayers.put(Controller.player2Json(player));
@@ -94,29 +138,44 @@ public class Controller {
     return jsonPlayers;
   }
 
-  public static JSONObject historyStatistics2Json(Game game) {
+  /**
+   * Convert stats object (the statistics of history games) to JSON object
+   * 
+   * @param game
+   * @return a JSON object, the stats of json object format
+   */
+  public static String historyStatistics2Json(Game game) {
     JSONObject jsonHistoryStatistics = new JSONObject();
     game.stats = new Stats();
 
+    // Add object attribute-value as key-value pair
     jsonHistoryStatistics.put("sumNGame", game.stats.sumNGame);
     jsonHistoryStatistics.put("sumNTie", game.stats.avgTie);
     jsonHistoryStatistics.put("sumNHumanWon", game.stats.sumNHumanWon);
     jsonHistoryStatistics.put("sumAiWon", game.stats.sumNAiWon);
     jsonHistoryStatistics.put("nLongestGame", game.stats.nLongestTurn);
 
-    return jsonHistoryStatistics;
+    return jsonHistoryStatistics.toString();
   }
 
+  /**
+   * Convert the statistics of current game to JSON object. The statistics is the
+   * attribute in game object. This do not involve Stats object.
+   * 
+   * @param game a Game object, the model in MVC pattern
+   * @return a JSON object, the game of json object format
+   */
   public static JSONObject gameStatistics2Json(Game game) {
     Stats stats = Game.game2Stats(game);
-
     JSONObject jsonGameStatistics = new JSONObject();
+
+    // Add object attribute-value as key-value pair
     jsonGameStatistics.put("nRounds", stats.nTurns);
     jsonGameStatistics.put("nTie", stats.nTie);
 
     JSONArray jsonArray = new JSONArray();
 
-    if(game.winningRecord!=null){
+    if (game.winningRecord != null) {
       for (int i : game.winningRecord) {
         jsonArray.put(i);
       }
@@ -126,9 +185,17 @@ public class Controller {
     return jsonGameStatistics;
   }
 
+  /**
+   * Convert game object to JSON object. Add all model into one JSON string which
+   * would be pass to javascript controller.
+   * 
+   * @param game a Game object, the model in MVC pattern
+   * @return a String, the String of JSON object by toString()
+   */
   public static String game2Json(Game game) {
     JSONObject jsonGameStatistics = new JSONObject();
 
+    // Add object attribute-value as key-value pair
     jsonGameStatistics.put("isGameOver", game.isGameOver);
     jsonGameStatistics.put("nPlayers", game.nPlayers);
     jsonGameStatistics.put("isTie", game.isTie);
@@ -139,9 +206,9 @@ public class Controller {
     jsonGameStatistics.put("turnId", game.turnId);
     jsonGameStatistics.put("nCards", game.getNCard());
     jsonGameStatistics.put("chosenCategory", game.chosenCategory);
+    jsonGameStatistics.put("gameStatistics", Controller.gameStatistics2Json(game));
 
-    // put object which could be null
-
+    // put value which could be null
     if (game.winningCard != null) {
       jsonGameStatistics.put("winningCard", Controller.card2Json(game.winningCard));
     } else {
@@ -163,47 +230,34 @@ public class Controller {
       jsonGameStatistics.put("humanCard", JSONObject.NULL);
     }
 
-    jsonGameStatistics.put("gameStatistics", Controller.gameStatistics2Json(game));
-    jsonGameStatistics.put("historyStatistics", Controller.historyStatistics2Json(game));
-
     return jsonGameStatistics.toString();
   }
 
+
+  /**
+   * Set the category chosen according to the user input
+   * 
+   * @param choice an int, a valid input value
+   */
   public void chooseCategory(int choice) {
     this.game.chosenCategory = this.game.getHumanCard().categories.get(choice - 1);
   }
 
-  public void control() {
-    // TODO decide to show human or AI cards or show stats
-    // Case 1: someone won the game
-    // Case 1.1: human player won
-    // Case 1.2: AI player won
-    // Case 2: no one won
-    // Case 2.1: human player's turn
-    // Case 2.2: AI player's turn
-  }
-
-  public boolean quit() {
-    // TODO update userWantsToQuit in app.java
-    return true;
-  }
-
   /**
-   * Getters for view
+   * Decide what to do next according to the use input before the game is start.
+   * <ul>
+   * <li>input = 1: print the history statistics and continue while loop.
+   * <li>
+   * <li>input = 2: start a game
+   * <li>
+   * <li>input = 3: quit from program. Break the while loop and set
+   * userWantsToQuit as true.
+   * <li>
+   * </ul>
+   * 
+   * @param input
+   * @return
    */
-
-  public boolean chooseToRestart(int choice) {
-    switch (choice) {
-    case 1:
-      this.toRestart = false;
-      break;
-    case 2:
-      this.toRestart = true;
-      break;
-    }
-    return this.toRestart;
-  }
-
   public boolean chooseStart(int input) {
     switch (input) {
     case 1:
@@ -218,6 +272,11 @@ public class Controller {
     return false;
   }
 
+  /**
+   * Getter for userWantsToQuit
+   * 
+   * @return a boolean
+   */
   public boolean getUserWantsToQuit() {
     return this.userWantsToQuit;
   }

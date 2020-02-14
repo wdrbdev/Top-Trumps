@@ -86,7 +86,7 @@ public class Stats {
        * deleted for final project
        */
       if (stResult > 0) {
-        System.out.println("Row inserted successfully");
+        // System.out.println("Row inserted successfully");
       } else {
         System.out.println("Return value of st.executeUpdate() is " + Integer.toString(stResult));
       }

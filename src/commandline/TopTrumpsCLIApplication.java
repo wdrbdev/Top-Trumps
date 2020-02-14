@@ -26,11 +26,12 @@ public class TopTrumpsCLIApplication {
 		// State
 		boolean userWantsToQuit = false; // flag to check whether the user wants to quit the application
 
-		// MVC
+		// MVC pattern
 		Game game = new Game();
 		Controller controller = new Controller(game);
 		View view = new View(game, controller);
 		controller.addView(view);
+		// Start the test log if the -t flag is declared
 		game.activateTestLog(writeGameLogsToFile);
 
 		// Loop until the user wants to exit the game
@@ -39,19 +40,28 @@ public class TopTrumpsCLIApplication {
 			// ----------------------------------------------------
 			// Add your game logic here based on the requirements
 			// ----------------------------------------------------
+			// Initialize player and cards
 			int nPlayers = 5;
 			game.startGame(nPlayers);
+
+			// Clear the screen
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
+
+			// Print start screen
 			view.printStart();
+			// If user choose to quit, break the while loop and exit from program
 			if (controller.getUserWantsToQuit())
 				break;
 
+			// The loop for each game
 			while (!game.isGameOver) {
+				// Clear the screen
 				System.out.print("\033[H\033[2J");
 				System.out.flush();
 
 				view.printRound();
+				view.printActivePlayer();
 				if (!game.isHumanOut) {
 					view.printNCards();
 					view.printDrawnCard();
@@ -79,7 +89,7 @@ public class TopTrumpsCLIApplication {
 					game.tLog.writeAllDecks();
 				}
 
-				view.click2Continue();
+				// view.click2Continue();
 
 			}
 

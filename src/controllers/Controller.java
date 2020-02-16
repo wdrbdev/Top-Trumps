@@ -233,7 +233,6 @@ public class Controller {
     return jsonGameStatistics.toString();
   }
 
-
   /**
    * Set the category chosen according to the user input
    * 
@@ -246,17 +245,16 @@ public class Controller {
   /**
    * Decide what to do next according to the use input before the game is start.
    * <ul>
-   * <li>input = 1: print the history statistics and continue while loop.
-   * <li>
-   * <li>input = 2: start a game
-   * <li>
+   * <li>input = 1: print the history statistics and continue while loop.</li>
+   * <li>input = 2: start a game</li>
    * <li>input = 3: quit from program. Break the while loop and set
-   * userWantsToQuit as true.
-   * <li>
+   * userWantsToQuit as true.</li>
    * </ul>
    * 
-   * @param input
-   * @return
+   * @param input an int, the user input
+   * @return a boolean, false if user want to see the history data and continue in
+   *         start screen, true if user want to start game play and break the
+   *         while loop in view.printStart().
    */
   public boolean chooseStart(int input) {
     switch (input) {

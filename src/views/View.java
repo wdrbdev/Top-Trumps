@@ -33,14 +33,14 @@ public class View {
     this.game.stats = new Stats();
 
     // Subtract history data from Stats
-    System.out.println("----------");
+    System.out.println("\n------------------------------");
     System.out.println("Total Number of Games So Far = " + Integer.toString(this.game.stats.sumNGame));
     System.out.println("Total Number of Games Human Won = " + Integer.toString(this.game.stats.sumNHumanWon));
     System.out.println("Total Number of Games Computer Won = " + Integer.toString(this.game.stats.sumNAiWon));
     System.out.println("Average Draw Round = " + Integer.toString((this.game.stats.avgTie)));
     System.out.println(
         "Maximum Number of Rounds (Longest Game) in a Game = " + Integer.toString(this.game.stats.nLongestTurn));
-    System.out.println("----------");
+    System.out.println("------------------------------\n");
   }
 
   /**
@@ -49,6 +49,7 @@ public class View {
    */
   public void printGameStats() {
     // Print the overall winner from currentWinner
+    System.out.println("\n------------------------------");
     System.out.print("The overall winner was ");
     Player winner = this.game.getWinner();
     if (winner.isHuman) {
@@ -62,11 +63,12 @@ public class View {
     int[] winningRecord = this.game.winningRecord;
     for (int i = 0; i < winningRecord.length; i++) {
       if (i == 0) {
-        System.out.println("You: " + winningRecord[i]);
+        System.out.println("Number of rounds you won: " + winningRecord[i]);
       } else {
-        System.out.println("AI player " + i + ": " + winningRecord[i]);
+        System.out.println("Number of rounds AI player " + i + " won : " + winningRecord[i]);
       }
     }
+    System.out.println("------------------------------\n");
   }
 
   /**
@@ -82,7 +84,7 @@ public class View {
    * Print the top of each round with horizontal line and show what round it is
    */
   public void printRound() {
-    System.out.println("\n----------");
+    System.out.println("\n------------------------------");
     System.out.println("Round " + this.game.turnId);
     System.out.print("Round " + this.game.turnId + ": ");
   }
@@ -208,7 +210,7 @@ public class View {
    */
   public void printStart() {
     while (true) {
-      System.out.println("----------");
+      System.out.println("\n------------------------------");
       System.out.println("Do you want to see past results or play a game?");
       System.out.println("1: Print Game Statistics");
       System.out.println("2: Play game");

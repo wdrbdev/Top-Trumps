@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import controllers.Controller;
 import models.Game;
+import models.Stats;
 import online.configuration.TopTrumpsJSONConfiguration;
 
 @Path("/toptrumps") // Resources specified here should be hosted at http://localhost:7777/toptrumps
@@ -173,6 +174,12 @@ public class TopTrumpsRESTAPI {
 	@Path("/gethistorystats")
 	public String getHitoryStats() {
 		return Controller.historyStatistics2Json(this.game);
+	}
+
+	@GET
+	@Path("/export2db")
+	public void export2DB() {
+		Stats.export2DB(this.game);
 	}
 
 }

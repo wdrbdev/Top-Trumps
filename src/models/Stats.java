@@ -182,8 +182,8 @@ public class Stats {
 
   public static void main(String[] args) {
     Stats importStats = new Stats();
-    // importStats.clearTable();
-    // importStats = new Stats();
+    importStats.clearTable();
+    importStats = new Stats();
 
     // Game game = new Game();
     // int nPlayers = 5;

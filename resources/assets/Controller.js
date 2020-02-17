@@ -198,6 +198,8 @@ function showActivePlayer() {
 
 // Show the statistics of the current game which include how many turn each player won
 function getGameStatistics() {
+  $.get("http://localhost:7777/toptrumps/export2db");
+
   $("#AiCards").empty();
   const gameStatistics = getGame().gameStatistics;
   // Template of game status board
